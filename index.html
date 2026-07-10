@@ -19,21 +19,6 @@
 
     .container { width: 100%; max-width: 420px; }
 
-    .header { text-align: center; margin-bottom: 24px; }
-    .header .badge {
-      display: inline-block;
-      background: #0284c7;
-      color: white;
-      font-size: 11px;
-      font-weight: bold;
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 8px;
-      letter-spacing: 1px;
-    }
-    .header h1 { font-size: 22px; font-weight: bold; color: #0c4a6e; line-height: 1.4; }
-    .header p { font-size: 13px; color: #0369a1; margin-top: 6px; }
-
     .card {
       background: white;
       border-radius: 20px;
@@ -41,6 +26,13 @@
       box-shadow: 0 8px 32px rgba(0,0,0,0.10);
     }
     .card-inner { padding: 28px 24px; }
+
+    /* クイズヘッダー画像 */
+    .quiz-header-img {
+      display: block;
+      width: calc(100% + 48px);
+      margin: -28px -24px 20px -24px;
+    }
 
     /* カバー */
     .cover-img { width: 100%; display: block; }
@@ -176,12 +168,6 @@
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <div class="badge">✦ 無料診断 ✦</div>
-    <h1>あなたの最適銘柄が<br>わかる診断</h1>
-    <p>3問で診断できます</p>
-  </div>
-
   <div class="card">
 
     <!-- カバー -->
@@ -195,6 +181,7 @@
 
     <!-- 質問エリア -->
     <div class="card-inner" id="quiz-area" style="display:none;">
+      <img src="7.png" alt="最適銘柄診断" class="quiz-header-img">
 
       <!-- Q1 -->
       <div class="screen active" id="q1">
