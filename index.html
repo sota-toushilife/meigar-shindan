@@ -121,8 +121,8 @@
     .point:last-child { margin-bottom: 0; }
     .point-icon { font-size: 16px; flex-shrink: 0; }
 
-    /* なんでこの2択？ */
-    .why-btn-wrap { text-align: center; margin-bottom: 14px; }
+    /* なんでこの2択？（両方見た人だけ表示） */
+    .why-btn-wrap { text-align: center; margin-bottom: 14px; display: none; }
     .why-btn {
       background: none;
       border: 1px dashed #94a3b8;
@@ -188,6 +188,7 @@
     <div class="cover-screen active" id="cover">
       <img src="7.png" alt="最適銘柄診断" class="cover-img">
       <div class="cover-btn-wrap">
+        <p style="font-size:11px;color:#94a3b8;text-align:center;line-height:1.7;margin-bottom:16px;">※この診断は特定の投資信託の購入を勧めるものではありません。あくまで参考情報としてご活用ください。</p>
         <button class="btn-start" onclick="startDiagnosis()">スタート！ 🚀</button>
       </div>
     </div>
@@ -325,7 +326,17 @@
     if (choice === 'usa') sp500Score += 2;
     else olcanScore += 2;
     setTimeout(() => {
-      showScreen(sp500Score >= olcanScore ? 'result_sp' : 'result_olcan');
+      const resultId = sp500Score >= olcanScore ? 'result_sp' : 'result_olcan';
+      // 見た結果をlocalStorageに記録
+      const seen = JSON.parse(localStorage.getItem('seenResults') || '{}');
+      seen[resultId] = true;
+      localStorage.setItem('seenResults', JSON.stringify(seen));
+      // 両方見たことがある人だけ「なんでこの2択？」ボタンを表示
+      const bothSeen = seen['result_sp'] && seen['result_olcan'];
+      showScreen(resultId);
+      if (bothSeen) {
+        document.querySelectorAll('.why-btn-wrap').forEach(el => el.style.display = 'block');
+      }
     }, 220);
   }
 
