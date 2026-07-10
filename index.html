@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>あなたに合う銘柄診断</title>
+  <title>あなたの最適銘柄診断</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -37,19 +37,52 @@
     .card {
       background: white;
       border-radius: 20px;
-      padding: 28px 24px;
+      overflow: hidden;
       box-shadow: 0 8px 32px rgba(0,0,0,0.10);
     }
+    .card-inner { padding: 28px 24px; }
 
+    /* カバー */
+    .cover-img { width: 100%; display: block; }
+    .cover-btn-wrap { padding: 24px 24px 28px; }
+    .btn-start {
+      width: 100%;
+      padding: 18px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 16px rgba(234,88,12,0.35);
+    }
+    .btn-start:active { transform: scale(0.97); opacity: 0.9; }
+
+    /* プログレス */
     .progress-wrap { margin-bottom: 20px; }
     .progress-label { display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; margin-bottom: 6px; }
     .progress-bar-bg { background: #e0f2fe; border-radius: 99px; height: 6px; }
     .progress-bar { background: linear-gradient(90deg, #38bdf8, #0284c7); height: 6px; border-radius: 99px; transition: width 0.4s ease; }
 
-    .question-emoji { font-size: 36px; text-align: center; margin-bottom: 12px; }
-    .question-text { font-size: 18px; font-weight: bold; color: #0c4a6e; text-align: center; line-height: 1.5; margin-bottom: 24px; }
-    .question-sub { font-size: 13px; color: #64748b; text-align: center; margin-top: -16px; margin-bottom: 20px; line-height: 1.6; }
+    /* 質問 */
+    .question-emoji { font-size: 40px; text-align: center; margin-bottom: 12px; }
+    .question-text { font-size: 18px; font-weight: bold; color: #0c4a6e; text-align: center; line-height: 1.5; margin-bottom: 8px; }
+    .question-example {
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 22px;
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+    .question-spacer { margin-bottom: 24px; }
 
+    /* ボタン */
     .btn-wrap { display: flex; flex-direction: column; gap: 12px; }
     .btn {
       width: 100%;
@@ -69,85 +102,52 @@
     .btn:active { transform: scale(0.96); background: #bae6fd; border-color: #0284c7; }
     .btn.selected { background: #0284c7; color: white; border-color: #0284c7; transform: scale(0.97); }
 
-    /* 免責画面 */
-    .disclaimer-icon { font-size: 52px; text-align: center; margin-bottom: 16px; }
-    .disclaimer-title { font-size: 20px; font-weight: bold; color: #0c4a6e; text-align: center; margin-bottom: 16px; line-height: 1.5; }
-    .disclaimer-box {
-      background: #f0f9ff;
-      border: 2px solid #bae6fd;
-      border-radius: 14px;
-      padding: 18px 16px;
-      font-size: 14px;
-      color: #334155;
-      line-height: 1.8;
-      margin-bottom: 24px;
-    }
-    .disclaimer-box .warning {
-      font-weight: bold;
-      color: #dc2626;
-      display: block;
-      margin: 8px 0 4px;
-    }
-
-    /* 結果画面 */
+    /* 結果 */
     .result-icon { font-size: 52px; text-align: center; margin-bottom: 8px; }
     .result-label { text-align: center; font-size: 12px; color: #64748b; margin-bottom: 6px; letter-spacing: 1px; }
-    .result-badge {
+    .result-badge { display: block; text-align: center; margin-bottom: 10px; }
+    .result-badge span {
       display: inline-block;
       background: #dbeafe;
       color: #1d4ed8;
       font-size: 11px;
       font-weight: bold;
-      padding: 3px 10px;
+      padding: 3px 12px;
       border-radius: 20px;
-      margin-bottom: 8px;
     }
-    .result-name {
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-      color: #0c4a6e;
-      margin-bottom: 16px;
-      line-height: 1.4;
-    }
-    .result-desc {
-      background: #f0f9ff;
-      border-radius: 12px;
-      padding: 16px;
-      font-size: 13px;
-      color: #334155;
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
-    .result-desc .point {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-    .result-desc .point:last-child { margin-bottom: 0; }
-    .result-desc .point-icon { font-size: 16px; flex-shrink: 0; }
-    .result-desc .point-text { flex: 1; }
+    .result-name { text-align: center; font-size: 22px; font-weight: bold; color: #0c4a6e; margin-bottom: 16px; line-height: 1.4; }
+    .result-desc { background: #f0f9ff; border-radius: 12px; padding: 16px; font-size: 13px; color: #334155; line-height: 1.8; margin-bottom: 16px; }
+    .point { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+    .point:last-child { margin-bottom: 0; }
+    .point-icon { font-size: 16px; flex-shrink: 0; }
 
-    .result-center { text-align: center; }
-
-    .btn-primary {
-      width: 100%;
-      padding: 16px;
-      border-radius: 14px;
-      border: none;
-      background: linear-gradient(135deg, #38bdf8, #0284c7);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
+    /* なんでこの2択？ */
+    .why-btn-wrap { text-align: center; margin-bottom: 14px; }
+    .why-btn {
+      background: none;
+      border: 1px dashed #94a3b8;
+      color: #64748b;
+      font-size: 12px;
+      padding: 8px 16px;
+      border-radius: 99px;
       cursor: pointer;
       transition: all 0.15s ease;
-      margin-bottom: 10px;
     }
-    .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
-    .btn-primary.green {
-      background: linear-gradient(135deg, #34d399, #059669);
+    .why-btn:active { background: #f1f5f9; }
+    .why-box {
+      display: none;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 12px;
+      color: #92400e;
+      line-height: 1.8;
+      margin-bottom: 14px;
     }
+    .why-box.open { display: block; }
+
+    .divider { height: 1px; background: #e0f2fe; margin: 16px 0; }
 
     .btn-restart {
       width: 100%;
@@ -163,36 +163,9 @@
     }
     .btn-restart:active { transform: scale(0.97); background: #f0f9ff; }
 
-    .pr-note { font-size: 10px; color: #b0bec5; text-align: center; margin: 4px 0 10px; }
-
-    /* 口座未定結果 */
-    .account-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .account-item {
-      border: 2px solid #e0f2fe;
-      border-radius: 12px;
-      padding: 14px 16px;
-      text-align: center;
-    }
-    .account-item .account-name { font-size: 14px; font-weight: bold; color: #0c4a6e; margin-bottom: 6px; }
-    .account-item .account-btn {
-      display: inline-block;
-      padding: 8px 20px;
-      border-radius: 99px;
-      font-size: 13px;
-      font-weight: bold;
-      cursor: pointer;
-      border: none;
-      color: white;
-      background: linear-gradient(135deg, #38bdf8, #0284c7);
-    }
-
-    .divider { height: 1px; background: #e0f2fe; margin: 20px 0; }
-
+    /* アニメーション */
+    .cover-screen { display: none; }
+    .cover-screen.active { display: block; }
     .screen { display: none; animation: fadeIn 0.3s ease; }
     .screen.active { display: block; }
     @keyframes fadeIn {
@@ -205,393 +178,180 @@
 <div class="container">
   <div class="header">
     <div class="badge">✦ 無料診断 ✦</div>
-    <h1>あなたに合う<br>銘柄がわかる</h1>
-    <p>4問以内で診断できます</p>
+    <h1>あなたの最適銘柄が<br>わかる診断</h1>
+    <p>3問で診断できます</p>
   </div>
 
   <div class="card">
 
-    <!-- ===== 免責同意 ===== -->
-    <div class="screen active" id="disclaimer">
-      <div class="disclaimer-icon">📊</div>
-      <div class="disclaimer-title">銘柄診断を<br>始める前に</div>
-      <div class="disclaimer-box">
-        ここでは僕が考えるオススメ銘柄を教えちゃいます！大体4つの質問に答えたら結果が出るよん！
-        <span class="warning">⚠️ ただし！</span>
-        特定の投資信託の投資勧誘を目的とするものでは無いので、「こんな特徴があるんだ」という認識ができる方だけ進めてください☺️
-      </div>
-      <button class="btn-primary" onclick="next('q1', this)">了承できる方のみ　始める！ 🚀</button>
-    </div>
-
-    <!-- ===== Q1: 証券口座 ===== -->
-    <div class="screen" id="q1">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q1</span><span>1 / 最大4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:25%"></div></div>
-      </div>
-      <div class="question-emoji">🏦</div>
-      <div class="question-text">どの証券口座で<br>買う予定？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('q2r', this)">🦅 楽天証券</button>
-        <button class="btn" onclick="next('q2s', this)">🏢 SBI証券</button>
-        <button class="btn" onclick="next('q2o', this)">🏛️ その他の証券口座</button>
-        <button class="btn" onclick="next('r_undecided', this)">🤔 まだ決まってない</button>
+    <!-- カバー -->
+    <div class="cover-screen active" id="cover">
+      <img src="7.png" alt="最適銘柄診断" class="cover-img">
+      <div class="cover-btn-wrap">
+        <button class="btn-start" onclick="startDiagnosis()">スタート！ 🚀</button>
       </div>
     </div>
 
-    <!-- ===== 楽天ルート ===== -->
+    <!-- 質問エリア -->
+    <div class="card-inner" id="quiz-area" style="display:none;">
 
-    <!-- Q2r: 楽天 → アメリカ期待？ -->
-    <div class="screen" id="q2r">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q2</span><span>2 / 最大4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:50%"></div></div>
-      </div>
-      <div class="question-emoji">🇺🇸</div>
-      <div class="question-text">アメリカの成長に<br>期待してる？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('q3ra', this)">🚀 期待大！</button>
-        <button class="btn" onclick="next('q3rb', this)">🤔 うーん...</button>
-      </div>
-    </div>
-
-    <!-- Q3ra: 楽天×期待大 → 手数料？ -->
-    <div class="screen" id="q3ra">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q3</span><span>3 / 最大4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:75%"></div></div>
-      </div>
-      <div class="question-emoji">💸</div>
-      <div class="question-text">手数料（信託報酬）の<br>安さを重視する？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('r_rakuten_sp', this)">✅ 安い方がいい！</button>
-        <button class="btn" onclick="next('r_slim_sp', this)">📈 安さより実績重視！</button>
-      </div>
-    </div>
-
-    <!-- Q3rb: 楽天×うーん → リスク？ -->
-    <div class="screen" id="q3rb">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q3</span><span>3 / 最大4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:75%"></div></div>
-      </div>
-      <div class="question-emoji">⚖️</div>
-      <div class="question-text">リターンより<br>リスクを回避したい？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('r_slim_bal', this)">🛡️ リスクは取りたくない</button>
-        <button class="btn" onclick="next('q4ra', this)">💰 リターンも欲しい</button>
-      </div>
-    </div>
-
-    <!-- Q4ra: 楽天×うーん×リターン → 手数料？ -->
-    <div class="screen" id="q4ra">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q4</span><span>4 / 4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
-      </div>
-      <div class="question-emoji">💸</div>
-      <div class="question-text">手数料（信託報酬）の<br>安さを重視する？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('r_rakuten_olcan', this)">✅ する！</button>
-        <button class="btn" onclick="next('r_slim_olcan', this)">📊 実績を重視するかな</button>
-      </div>
-    </div>
-
-    <!-- ===== SBIルート ===== -->
-
-    <!-- Q2s: SBI → リターン？リスク？ -->
-    <div class="screen" id="q2s">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q2</span><span>2 / 最大4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:50%"></div></div>
-      </div>
-      <div class="question-emoji">📈</div>
-      <div class="question-text">積極的に<br>リターンを狙いたい？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('q3sa', this)">🚀 リターン重視！</button>
-        <button class="btn" onclick="next('q3sb', this)">🛡️ リスクも回避したい</button>
-      </div>
-    </div>
-
-    <!-- Q3sa: SBI×リターン → アメリカ期待度 -->
-    <div class="screen" id="q3sa">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q3</span><span>3 / 最大4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:75%"></div></div>
-      </div>
-      <div class="question-emoji">🇺🇸</div>
-      <div class="question-text">アメリカへの<br>期待度は？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('r_slim_sp', this)">🔥 めちゃ期待！</button>
-        <button class="btn" onclick="next('q4sa', this)">😐 まあまあ期待</button>
-      </div>
-    </div>
-
-    <!-- Q4sa: SBI×リターン×まあまあ → 手数料？ -->
-    <div class="screen" id="q4sa">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q4</span><span>4 / 4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
-      </div>
-      <div class="question-emoji">💸</div>
-      <div class="question-text">手数料（信託報酬）は<br>気にする？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('r_slim_pioneer', this)">😐 気にしないかな</button>
-        <button class="btn" onclick="next('r_slim_olcan', this)">✅ 安い方がいいかな</button>
-      </div>
-    </div>
-
-    <!-- Q3sb: SBI×リスク回避 → アメリカ期待？ -->
-    <div class="screen" id="q3sb">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q3</span><span>3 / 最大4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:75%"></div></div>
-      </div>
-      <div class="question-emoji">🌍</div>
-      <div class="question-text">アメリカには<br>期待する？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('q4sb', this)">👍 一応してる</button>
-        <button class="btn" onclick="next('r_slim_bal', this)">😟 ちょっと心配...</button>
-      </div>
-    </div>
-
-    <!-- Q4sb: SBI×リスク回避×一応期待 → 手数料？ -->
-    <div class="screen" id="q4sb">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q4</span><span>4 / 4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
-      </div>
-      <div class="question-emoji">💸</div>
-      <div class="question-text">手数料（信託報酬）は<br>気にする？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('r_slim_sp', this)">😐 気にしない</button>
-        <button class="btn" onclick="next('r_slim_pioneer', this)">✅ 気にする</button>
-      </div>
-    </div>
-
-    <!-- ===== その他ルート ===== -->
-
-    <!-- Q2o: その他 → アメリカ期待？ -->
-    <div class="screen" id="q2o">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q2</span><span>2 / 最大4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:50%"></div></div>
-      </div>
-      <div class="question-emoji">🇺🇸</div>
-      <div class="question-text">アメリカの成長に<br>期待してる？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('q3oa', this)">🚀 期待してる！</button>
-        <button class="btn" onclick="next('q3ob', this)">😐 まあまあ</button>
-      </div>
-    </div>
-
-    <!-- Q3oa: その他×期待 → 手数料？ -->
-    <div class="screen" id="q3oa">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q3</span><span>3 / 最大4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:75%"></div></div>
-      </div>
-      <div class="question-emoji">💸</div>
-      <div class="question-text">重視するのは？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('r_slim_sp', this)">💡 手数料が安い方がいいな！</button>
-        <button class="btn" onclick="next('r_slim_pioneer', this)">📈 リターン（実績）重視！</button>
-      </div>
-    </div>
-
-    <!-- Q3ob: その他×まあまあ → リスク？ -->
-    <div class="screen" id="q3ob">
-      <div class="progress-wrap">
-        <div class="progress-label"><span>Q3</span><span>3 / 最大4問</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:75%"></div></div>
-      </div>
-      <div class="question-emoji">⚖️</div>
-      <div class="question-text">どちらを重視する？</div>
-      <div class="btn-wrap">
-        <button class="btn" onclick="next('r_slim_bal', this)">🛡️ リスクは少ない方がいい</button>
-        <button class="btn" onclick="next('r_slim_olcan', this)">💰 リターンも欲しい</button>
-      </div>
-    </div>
-
-    <!-- ===== 結果画面 ===== -->
-
-    <!-- R1: 楽天・S&P500インデックスファンド -->
-    <div class="screen" id="r_rakuten_sp">
-      <div class="progress-wrap">
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
-      </div>
-      <div style="height:12px"></div>
-      <div class="result-icon">🎉</div>
-      <div class="result-center">
-        <div class="result-label">あなたにオススメの銘柄は</div>
-        <div class="result-badge">楽天証券限定</div>
-      </div>
-      <div class="result-name">楽天・S&P500<br>インデックスファンド</div>
-      <div class="result-desc">
-        <div class="point"><span class="point-icon">✅</span><span class="point-text">楽天証券でしか買えない、低コストのS&P500ファンド</span></div>
-        <div class="point"><span class="point-icon">💰</span><span class="point-text">信託報酬 年0.077%（業界トップクラスの安さ）</span></div>
-        <div class="point"><span class="point-icon">🛒</span><span class="point-text">楽天ポイントでそのまま積立投資ができる</span></div>
-      </div>
-      <div class="divider"></div>
-      <button class="btn-primary" onclick="openLink('https://account.rakuten-sec.co.jp/ApplicationTop/introduceFriend.do?introClientCd=GzfHrdOvjrc%3D&hash=85666fb8f206334d9c529e363aa1cc34&introBranchCd=%2FKsvUSSTkts%3D&routeKey=SEC01001&urlSendDt=MFW9f3VzapkH9UBAaAOoYA%3D%3D&sendSnsKbn=1')">楽天証券の口座開設はこちら →</button>
-      <p class="pr-note">※紹介プログラムを利用しています（PR）</p>
-      <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
-    </div>
-
-    <!-- R2: eMAXIS Slim 米国株式（S&P500） -->
-    <div class="screen" id="r_slim_sp">
-      <div class="progress-wrap">
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
-      </div>
-      <div style="height:12px"></div>
-      <div class="result-icon">🎉</div>
-      <div class="result-center">
-        <div class="result-label">あなたにオススメの銘柄は</div>
-        <div class="result-badge">定番の最強ファンド</div>
-      </div>
-      <div class="result-name">eMAXIS Slim<br>米国株式（S&P500）</div>
-      <div class="result-desc">
-        <div class="point"><span class="point-icon">🇺🇸</span><span class="point-text">米国を代表する500社に一括投資できる</span></div>
-        <div class="point"><span class="point-icon">📈</span><span class="point-text">長期リターンNo.1クラスの人気ファンド</span></div>
-        <div class="point"><span class="point-icon">💸</span><span class="point-text">信託報酬 年0.09372%（超低コスト）</span></div>
-      </div>
-      <div class="divider"></div>
-      <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
-    </div>
-
-    <!-- R3: eMAXIS Slim バランス（8資産均等型） -->
-    <div class="screen" id="r_slim_bal">
-      <div class="progress-wrap">
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
-      </div>
-      <div style="height:12px"></div>
-      <div class="result-icon">🎉</div>
-      <div class="result-center">
-        <div class="result-label">あなたにオススメの銘柄は</div>
-        <div class="result-badge">安定重視タイプ</div>
-      </div>
-      <div class="result-name">eMAXIS Slim<br>バランス（8資産均等型）</div>
-      <div class="result-desc">
-        <div class="point"><span class="point-icon">🛡️</span><span class="point-text">株・債券・REITなど8種類の資産に均等分散</span></div>
-        <div class="point"><span class="point-icon">😌</span><span class="point-text">価格の上下が穏やかで精神的に楽</span></div>
-        <div class="point"><span class="point-icon">💸</span><span class="point-text">信託報酬 年0.143%（バランスファンドの中では低い）</span></div>
-      </div>
-      <div class="divider"></div>
-      <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
-    </div>
-
-    <!-- R4: 楽天おるかん -->
-    <div class="screen" id="r_rakuten_olcan">
-      <div class="progress-wrap">
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
-      </div>
-      <div style="height:12px"></div>
-      <div class="result-icon">🎉</div>
-      <div class="result-center">
-        <div class="result-label">あなたにオススメの銘柄は</div>
-        <div class="result-badge">楽天証券限定</div>
-      </div>
-      <div class="result-name">楽天おるかん<br><span style="font-size:14px;color:#64748b">（楽天・全世界株式インデックスF）</span></div>
-      <div class="result-desc">
-        <div class="point"><span class="point-icon">🌍</span><span class="point-text">日本・先進国・新興国の約3,000社に分散投資</span></div>
-        <div class="point"><span class="point-icon">💸</span><span class="point-text">信託報酬 年0.05775%（業界最低水準）</span></div>
-        <div class="point"><span class="point-icon">🛒</span><span class="point-text">楽天ポイントで積立可能</span></div>
-      </div>
-      <div class="divider"></div>
-      <button class="btn-primary" onclick="openLink('https://account.rakuten-sec.co.jp/ApplicationTop/introduceFriend.do?introClientCd=GzfHrdOvjrc%3D&hash=85666fb8f206334d9c529e363aa1cc34&introBranchCd=%2FKsvUSSTkts%3D&routeKey=SEC01001&urlSendDt=MFW9f3VzapkH9UBAaAOoYA%3D%3D&sendSnsKbn=1')">楽天証券の口座開設はこちら →</button>
-      <p class="pr-note">※紹介プログラムを利用しています（PR）</p>
-      <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
-    </div>
-
-    <!-- R5: eMAXIS Slim 全世界株式（オルカン） -->
-    <div class="screen" id="r_slim_olcan">
-      <div class="progress-wrap">
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
-      </div>
-      <div style="height:12px"></div>
-      <div class="result-icon">🎉</div>
-      <div class="result-center">
-        <div class="result-label">あなたにオススメの銘柄は</div>
-        <div class="result-badge">長期投資の定番</div>
-      </div>
-      <div class="result-name">eMAXIS SLIM<br>全世界株式（オール・カントリー）</div>
-      <div class="result-desc">
-        <div class="point"><span class="point-icon">🌍</span><span class="point-text">先進国・新興国を含む全世界47カ国に投資</span></div>
-        <div class="point"><span class="point-icon">📊</span><span class="point-text">分散投資しながら長期的な成長を狙える</span></div>
-        <div class="point"><span class="point-icon">💸</span><span class="point-text">信託報酬 年0.05775%（業界最低水準）</span></div>
-      </div>
-      <div class="divider"></div>
-      <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
-    </div>
-
-    <!-- R6: eMAXIS Slim 先進国株式インデックス -->
-    <div class="screen" id="r_slim_pioneer">
-      <div class="progress-wrap">
-        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
-      </div>
-      <div style="height:12px"></div>
-      <div class="result-icon">🎉</div>
-      <div class="result-center">
-        <div class="result-label">あなたにオススメの銘柄は</div>
-        <div class="result-badge">バランス型成長ファンド</div>
-      </div>
-      <div class="result-name">eMAXIS SLIM<br>先進国株式インデックス</div>
-      <div class="result-desc">
-        <div class="point"><span class="point-icon">🌏</span><span class="point-text">日本を除く先進国22カ国の株式に分散投資</span></div>
-        <div class="point"><span class="point-icon">⚖️</span><span class="point-text">アメリカだけに偏らずリスク分散しながら成長を狙える</span></div>
-        <div class="point"><span class="point-icon">💸</span><span class="point-text">信託報酬 年0.09889%（超低コスト）</span></div>
-      </div>
-      <div class="divider"></div>
-      <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
-    </div>
-
-    <!-- R7: まだ決まってない -->
-    <div class="screen" id="r_undecided">
-      <div style="height:8px"></div>
-      <div class="result-icon">🏦</div>
-      <div class="result-name" style="text-align:center">まずは証券口座を<br>開設しよう！</div>
-      <p style="font-size:13px;color:#64748b;text-align:center;margin-bottom:20px;line-height:1.7">口座を開いてから、また銘柄診断に戻ってきてね☺️</p>
-      <div class="account-list">
-        <div class="account-item">
-          <div class="account-name">🦅 楽天証券で開設する</div>
-          <button class="account-btn" onclick="openLink('https://account.rakuten-sec.co.jp/ApplicationTop/introduceFriend.do?introClientCd=GzfHrdOvjrc%3D&hash=85666fb8f206334d9c529e363aa1cc34&introBranchCd=%2FKsvUSSTkts%3D&routeKey=SEC01001&urlSendDt=MFW9f3VzapkH9UBAaAOoYA%3D%3D&sendSnsKbn=1')">口座開設ガイドへ →</button>
+      <!-- Q1 -->
+      <div class="screen active" id="q1">
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Q1</span><span>1 / 3問</span></div>
+          <div class="progress-bar-bg"><div class="progress-bar" style="width:33%"></div></div>
         </div>
-        <div class="account-item">
-          <div class="account-name">🏢 SBI証券を開設する</div>
-          <button class="account-btn" onclick="openLink('https://www.sbisec.co.jp/')">口座開設ガイドへ →</button>
-        </div>
-        <div class="account-item">
-          <div class="account-name">🤔 どこで開設しようか<br>決まってない人は</div>
-          <button class="account-btn" onclick="openLink('https://sota-toushilife.github.io/Shoukengaisya_shindan/')">証券会社診断へ！→</button>
+        <div class="question-emoji">🇺🇸</div>
+        <div class="question-text">アメリカ経済、<br>これからも強いと思う？</div>
+        <div class="question-spacer"></div>
+        <div class="btn-wrap">
+          <button class="btn" onclick="answerQ1('strong', this)">🔥 めっちゃ信じてる！</button>
+          <button class="btn" onclick="answerQ1('normal', this)">😐 まあ信じてる</button>
+          <button class="btn" onclick="answerQ1('weak', this)">😟 ちょっと不安…</button>
         </div>
       </div>
-      <p class="pr-note">※紹介プログラムを利用しています（PR）</p>
-      <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
-    </div>
 
-  </div>
-</div>
+      <!-- Q2 -->
+      <div class="screen" id="q2">
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Q2</span><span>2 / 3問</span></div>
+          <div class="progress-bar-bg"><div class="progress-bar" style="width:66%"></div></div>
+        </div>
+        <div class="question-emoji">📉</div>
+        <div class="question-text">投資したお金が<br>マイナスになってたら？</div>
+        <div class="question-example">例）100万円投資して、今70万円になってる</div>
+        <div class="btn-wrap">
+          <button class="btn" onclick="answerQ2('ok', this)">😎 長期投資だし気にしない</button>
+          <button class="btn" onclick="answerQ2('scared', this)">😰 ちょっと怖い、もう少し安定が良かった</button>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="screen" id="q3">
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Q3</span><span>3 / 3問</span></div>
+          <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
+        </div>
+        <div class="question-emoji">🌍</div>
+        <div class="question-text">アメリカ以外の国も<br>一緒に持っておきたい？</div>
+        <div class="question-example">例）ヨーロッパ・インド・日本など</div>
+        <div class="btn-wrap">
+          <button class="btn" onclick="answerQ3('usa', this)">🇺🇸 アメリカだけでいい！</button>
+          <button class="btn" onclick="answerQ3('global', this)">🌍 他の国も一緒に持っておきたい</button>
+        </div>
+      </div>
+
+      <!-- 結果: S&P500 -->
+      <div class="screen" id="result_sp">
+        <div class="progress-wrap">
+          <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
+        </div>
+        <div style="height:12px"></div>
+        <div class="result-icon">🎉</div>
+        <div class="result-label">あなたにオススメの銘柄は</div>
+        <div class="result-badge"><span>米国集中・高リターン型</span></div>
+        <div class="result-name">eMAXIS Slim<br>米国株式（S&P500）</div>
+        <div class="result-desc">
+          <div class="point"><span class="point-icon">🇺🇸</span><span>米国を代表する500社に一括投資できる</span></div>
+          <div class="point"><span class="point-icon">📈</span><span>過去10年の長期リターンはトップクラス</span></div>
+          <div class="point"><span class="point-icon">💸</span><span>信託報酬 年0.09372%（超低コスト）</span></div>
+        </div>
+        <div class="why-btn-wrap">
+          <button class="why-btn" onclick="toggleWhy(this)">🤔 なんでこの2択なの？</button>
+        </div>
+        <div class="why-box">
+          世の中には無数のファンドがありますが、長期投資で「低コスト×実績×分散」を満たすのはS&P500とオルカンの2本が突出しています。バランスファンドなどは安定感はありますが、長期では理論上このどちらかに劣ることが多いため、この診断では2択に絞っています。
+        </div>
+        <div class="divider"></div>
+        <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
+      </div>
+
+      <!-- 結果: オルカン -->
+      <div class="screen" id="result_olcan">
+        <div class="progress-wrap">
+          <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
+        </div>
+        <div style="height:12px"></div>
+        <div class="result-icon">🎉</div>
+        <div class="result-label">あなたにオススメの銘柄は</div>
+        <div class="result-badge"><span>全世界分散・安定成長型</span></div>
+        <div class="result-name">eMAXIS Slim<br>全世界株式（オール・カントリー）</div>
+        <div class="result-desc">
+          <div class="point"><span class="point-icon">🌍</span><span>先進国・新興国を含む全世界約2,900銘柄に分散投資</span></div>
+          <div class="point"><span class="point-icon">🛡️</span><span>アメリカ1国に依存しないのでリスク分散◎</span></div>
+          <div class="point"><span class="point-icon">💸</span><span>信託報酬 年0.05775%（業界最低水準）</span></div>
+        </div>
+        <div class="why-btn-wrap">
+          <button class="why-btn" onclick="toggleWhy(this)">🤔 なんでこの2択なの？</button>
+        </div>
+        <div class="why-box">
+          世の中には無数のファンドがありますが、長期投資で「低コスト×実績×分散」を満たすのはS&P500とオルカンの2本が突出しています。バランスファンドなどは安定感はありますが、長期では理論上このどちらかに劣ることが多いため、この診断では2択に絞っています。
+        </div>
+        <div class="divider"></div>
+        <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
+      </div>
+
+    </div><!-- /card-inner -->
+  </div><!-- /card -->
+</div><!-- /container -->
 
 <script>
-  function next(targetId, btn) {
-    if (btn.tagName === 'BUTTON') {
-      btn.classList.add('selected');
-    }
-    setTimeout(() => {
-      document.querySelector('.screen.active').classList.remove('active');
-      document.getElementById(targetId).classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 200);
-  }
+  let sp500Score = 0;
+  let olcanScore = 0;
 
-  function restart() {
-    document.querySelector('.screen.active').classList.remove('active');
-    document.getElementById('disclaimer').classList.add('active');
+  function startDiagnosis() {
+    document.getElementById('cover').classList.remove('active');
+    document.getElementById('quiz-area').style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function openLink(url) {
-    window.open(url, '_blank');
+  function answerQ1(choice, btn) {
+    btn.classList.add('selected');
+    if (choice === 'strong') sp500Score += 2;
+    else if (choice === 'weak') olcanScore += 2;
+    // 'normal' = ニュートラル（加算なし）
+    setTimeout(() => showScreen('q2'), 220);
+  }
+
+  function answerQ2(choice, btn) {
+    btn.classList.add('selected');
+    if (choice === 'ok') sp500Score += 1;
+    else olcanScore += 1;
+    setTimeout(() => showScreen('q3'), 220);
+  }
+
+  function answerQ3(choice, btn) {
+    btn.classList.add('selected');
+    if (choice === 'usa') sp500Score += 2;
+    else olcanScore += 2;
+    setTimeout(() => {
+      showScreen(sp500Score >= olcanScore ? 'result_sp' : 'result_olcan');
+    }, 220);
+  }
+
+  function showScreen(id) {
+    const current = document.querySelector('#quiz-area .screen.active');
+    if (current) current.classList.remove('active');
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleWhy(btn) {
+    const box = btn.closest('.screen').querySelector('.why-box');
+    box.classList.toggle('open');
+  }
+
+  function restart() {
+    sp500Score = 0;
+    olcanScore = 0;
+    document.querySelectorAll('.btn.selected').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.why-box.open').forEach(b => b.classList.remove('open'));
+    const current = document.querySelector('#quiz-area .screen.active');
+    if (current) current.classList.remove('active');
+    document.getElementById('q1').classList.add('active');
+    document.getElementById('quiz-area').style.display = 'none';
+    document.getElementById('cover').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
 </body>
