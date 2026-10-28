@@ -167,6 +167,90 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* 銘柄詳細アコーディオン */
+    .more-detail-section {
+      margin: 0 0 14px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1.5px solid #e2e8f0;
+    }
+    .more-detail-header {
+      padding: 13px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      user-select: none;
+    }
+    .more-detail-header.sp {
+      background: linear-gradient(90deg, #7c3aed, #a855f7);
+      color: white;
+    }
+    .more-detail-header.olcan {
+      background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+      color: white;
+    }
+    .more-detail-arrow {
+      font-size: 13px;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .more-detail-section.open .more-detail-arrow { transform: rotate(180deg); }
+    .more-detail-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: white;
+    }
+    .more-detail-section.open .more-detail-body { max-height: 2400px; }
+    .more-detail-inner { padding: 12px 14px; }
+    .more-detail-fund {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+    .more-detail-fund.sp { background: #faf5ff; color: #7c3aed; border-left: 3px solid #7c3aed; }
+    .more-detail-fund.olcan { background: #f0f9ff; color: #0284c7; border-left: 3px solid #38bdf8; }
+    .md-acc-item {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .md-acc-header {
+      background: #f8fafc;
+      padding: 11px 14px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      user-select: none;
+    }
+    .md-acc-arrow { font-size: 11px; color: #94a3b8; transition: transform 0.25s; flex-shrink: 0; }
+    .md-acc-item.open .md-acc-arrow { transform: rotate(180deg); }
+    .md-acc-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .md-acc-item.open .md-acc-body { max-height: 600px; }
+    .md-acc-content {
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.8;
+      border-top: 1px solid #e2e8f0;
+    }
+    .md-acc-content p { margin-bottom: 8px; }
+    .md-acc-content p:last-child { margin-bottom: 0; }
+    .mhl { background: linear-gradient(transparent 60%, #bae6fd 60%); font-weight: 700; }
+    .mhl-v { background: linear-gradient(transparent 60%, #e9d5ff 60%); font-weight: 700; }
+    .mred { color: #ef4444; font-weight: 800; }
   </style>
 </head>
 <body>
@@ -253,6 +337,48 @@
         <div class="why-box">
           世の中には無数のファンドがありますが、長期投資で「低コスト×実績×分散」を満たすのはS&P500とオルカンの2本が突出しています。バランスファンドなどは安定感はありますが、長期では理論上このどちらかに劣ることが多いため、この診断では2択に絞っています。
         </div>
+
+        <!-- S&P500詳細アコーディオン -->
+        <div class="more-detail-section" id="mds-sp">
+          <div class="more-detail-header sp" onclick="toggleMoreDetail('mds-sp')">
+            🇺🇸 もっとS&P500を詳しく知りたい！
+            <span class="more-detail-arrow">▼</span>
+          </div>
+          <div class="more-detail-body">
+            <div class="more-detail-inner">
+              <div class="more-detail-fund sp">eMAXIS Slim 米国株式（S&P500）｜信託報酬：年0.09372%</div>
+              <div class="md-acc-item" id="mda1">
+                <div class="md-acc-header" onclick="toggleMdAcc('mda1')">なんでアメリカの株だけでいいの？<span class="md-acc-arrow">▼</span></div>
+                <div class="md-acc-body"><div class="md-acc-content">
+                  <p>アメリカは世界最大の経済大国で、世界GDPの約25%を占めます。Apple・Microsoft・Amazon・Google・NVIDIAなど、世界を席巻するテック企業のほぼ全てがアメリカ発。</p>
+                  <p>これらの企業は<span class="mhl-v">全世界でビジネスをしているグローバル企業</span>です。S&P500への投資は「アメリカ国内への投資」だけでなく「アメリカ企業を通じて世界経済に投資する」とも言えます。</p>
+                </div></div>
+              </div>
+              <div class="md-acc-item" id="mda2">
+                <div class="md-acc-header" onclick="toggleMdAcc('mda2')">S&P500の過去リターンは？<span class="md-acc-arrow">▼</span></div>
+                <div class="md-acc-body"><div class="md-acc-content">
+                  <p>S&P500は過去約100年のデータがあり、年平均リターンは<span class="mhl-v">約10%（インフレ調整後で約7%）</span>。</p>
+                  <p>直近10年（2014〜2023年）はAI・テック株の急成長もあり、年平均で<strong>約13%前後</strong>という驚異的なリターンを出しています。</p>
+                </div></div>
+              </div>
+              <div class="md-acc-item" id="mda3">
+                <div class="md-acc-header" onclick="toggleMdAcc('mda3')">S&P500の500社ってどんな会社？<span class="md-acc-arrow">▼</span></div>
+                <div class="md-acc-body"><div class="md-acc-content">
+                  <p>上場する大型優良企業から厳格な基準で選ばれた500社です。上位10社でファンド全体の約35%を占め、Apple・Microsoft・NVIDIA・Amazon・Alphabet（Google）・Meta・Tesla…誰もが知るブランドばかり。</p>
+                  <p>「業績が悪くなった会社は外され、成長した会社が入る」という<span class="mhl-v">自動的な入れ替え</span>が行われるため、常に優良企業のポートフォリオが維持されます。</p>
+                </div></div>
+              </div>
+              <div class="md-acc-item" id="mda4">
+                <div class="md-acc-header" onclick="toggleMdAcc('mda4')">米国だけだとリスクが高くない？<span class="md-acc-arrow">▼</span></div>
+                <div class="md-acc-body"><div class="md-acc-content">
+                  <p>確かに「1国集中」は分散の観点では劣ります。でもS&P500内でも業種分散（IT・金融・ヘルスケア・消費財など）はされています。</p>
+                  <p>また、S&P500の企業は全世界でビジネスをしているため「アメリカだけのリスク」は思ったより高くないという見方もあります。</p>
+                  <p>「リスクをより抑えたい→オルカン」「過去実績重視・リターンを追いたい→S&P500」というのが一般的な使い分けです。</p>
+                </div></div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="divider"></div>
         <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
       </div>
@@ -277,6 +403,49 @@
         </div>
         <div class="why-box">
           世の中には無数のファンドがありますが、長期投資で「低コスト×実績×分散」を満たすのはS&P500とオルカンの2本が突出しています。バランスファンドなどは安定感はありますが、長期では理論上このどちらかに劣ることが多いため、この診断では2択に絞っています。
+        </div>
+
+        <!-- オルカン詳細アコーディオン -->
+        <div class="more-detail-section" id="mds-olcan">
+          <div class="more-detail-header olcan" onclick="toggleMoreDetail('mds-olcan')">
+            🌍 もっとオルカンを詳しく知りたい！
+            <span class="more-detail-arrow">▼</span>
+          </div>
+          <div class="more-detail-body">
+            <div class="more-detail-inner">
+              <div class="more-detail-fund olcan">eMAXIS Slim 全世界株式（オルカン）｜信託報酬：年0.05775%</div>
+              <div class="md-acc-item" id="mda5">
+                <div class="md-acc-header" onclick="toggleMdAcc('mda5')">なんで「全世界」に投資するの？<span class="md-acc-arrow">▼</span></div>
+                <div class="md-acc-body"><div class="md-acc-content">
+                  <p>「どの国が今後成長するか」は誰にも予測できません。過去を見ると、2000年代は新興国（中国・インドなど）が急成長し、2010年代は米国が圧倒的に強かった。</p>
+                  <p>全世界に投資しておけば、<span class="mhl">どの国が成長しても自動的にそこへの投資比率が増える</span>仕組みになっています。「予測できないなら全部買う」という合理的な判断です。</p>
+                  <p>ちなみに現在のオルカンは<strong>米国が約60%</strong>を占めています。「全世界」でも米国の影響が大きい点は知っておくといいです。</p>
+                </div></div>
+              </div>
+              <div class="md-acc-item" id="mda6">
+                <div class="md-acc-header" onclick="toggleMdAcc('mda6')">3,000銘柄以上に分散ってどういう意味？<span class="md-acc-arrow">▼</span></div>
+                <div class="md-acc-body"><div class="md-acc-content">
+                  <p>1万円でオルカンを買うと、その1万円が自動的に世界中の3,000社以上に分配されます。Apple、Microsoft、トヨタ、サムスン、TSMC…全部入ってる。</p>
+                  <p>仮に1社が倒産しても、あなたの資産への影響は<span class="mhl">全体の0.1%以下</span>。個別株で1社に全額投資するリスクとは比べ物にならない安定感です。</p>
+                </div></div>
+              </div>
+              <div class="md-acc-item" id="mda7">
+                <div class="md-acc-header" onclick="toggleMdAcc('mda7')">信託報酬0.05775%って安いの？<span class="md-acc-arrow">▼</span></div>
+                <div class="md-acc-body"><div class="md-acc-content">
+                  <p>めちゃくちゃ安いです。銀行窓口のアクティブファンドは年1〜2%が多い。100万円を30年運用した場合の差は：</p>
+                  <p>・信託報酬0.05775%（オルカン）→ コスト：約18万円<br>・信託報酬1.5%（アクティブ型）→ コスト：約450万円</p>
+                  <p><span class="mred">その差、約432万円。</span>パフォーマンスが同じでも、コストだけでこれだけ変わります。</p>
+                </div></div>
+              </div>
+              <div class="md-acc-item" id="mda8">
+                <div class="md-acc-header" onclick="toggleMdAcc('mda8')">過去の実績は？<span class="md-acc-arrow">▼</span></div>
+                <div class="md-acc-body"><div class="md-acc-content">
+                  <p>全世界株式のベンチマーク（MSCI ACWI指数）は、過去30年で<span class="mhl">年平均約8%前後のリターン</span>を出してきました。</p>
+                  <p>リーマンショック（2008年）やコロナショック（2020年）など大きな暴落も経験しましたが、いずれも数年以内に回復・過去最高値を更新しています。「長期で持てば報われる」という実績が積み上がっているのが最大の根拠です。</p>
+                </div></div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="divider"></div>
         <button class="btn-restart" onclick="restart()">もう一度診断する 🔄</button>
@@ -353,6 +522,13 @@
     document.getElementById('quiz-area').style.display = 'none';
     document.getElementById('cover').classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleMoreDetail(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+  function toggleMdAcc(id) {
+    document.getElementById(id).classList.toggle('open');
   }
 </script>
 </body>
